@@ -10,7 +10,7 @@ class Post(models.Model):
     views = models.IntegerField(default=0)
     pub_date = models.DateTimeField(auto_now_add=True)
     slug = models.CharField(max_length=140)
-    image = models.ImageField(default="deafult.png", blank=True)
+    image = models.ImageField(default="deafult.png", upload_to="blog/images", blank=True)
 
 
     def __str__(self):

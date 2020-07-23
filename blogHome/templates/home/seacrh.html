@@ -4,6 +4,17 @@
 
 {% block blogactive %} active {% endblock blogactive %}
 
+{% block css %}
+<style>
+
+  .preview{
+    text-align: justify;
+  }
+
+
+</style>
+{% endblock css %}
+
 {% block js %}
 <script>
 
@@ -41,15 +52,13 @@
         <p><strong class="d-inline-block mb-2 text-primary">By {{post.author}}</strong> ({{post.views}} views)</p>
         <h3 class="mb-0">{{post.title}}</h3>
         <div class="mb-1 text-muted">{{post.pub_date}}</div>
-        <p class="card-text mb-auto"><div class="preview">{{post.content| truncatechars:400|safe}}</div></p>
+        <p class="card-text mb-auto"><div class="preview">{{post.content| truncatechars:500|safe}}</div></p>
          <div class="my-2">
-            <a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a>
+            <a href="/bloghome/blog/{{post.slug}}" role="button" class="btn btn-secondary">Continue reading</a>
             </div>
       </div>
-      <div class="col-auto d-none d-lg-block">
-        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-        <img src="{{post.image.url}}" alt="thumbnail" style="height:auto; width:20rem; align-items: center; margin-top: 5rem; margin-bottom: 5rem;">
+      <div class="col-md-4 d-none d-lg-block">
+        <img src="/media/{{post.image}}" alt="thumbnail" style="height:auto; width:20rem; margin-top: 5rem; margin-bottom: 5rem;">
         </svg>
       </div>
     </div>
