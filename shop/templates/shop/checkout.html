@@ -1,0 +1,132 @@
+{% extends 'shop/base.html' %}
+
+{% block titles %} Checkout {% endblock %}
+
+{% block body %}
+
+<div class="container my-4">
+    <h4> MyCart Express Delivery Service </h4>
+
+    <div class="col my-4">
+        <h5> Step-1 Review your Cart items </h5>
+        <ul class="list-group" id="items">
+
+        </ul>
+        <ul class="list-group" id="total_amt">
+
+        </ul>
+    </div>
+
+
+    <div class="col my-4">
+
+        <h5> Step-2 Shipping Address and other details </h5>
+
+        <form action="/shop/checkout/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="Item_Json" id="Item_Json">
+            <input type="hidden" name="amount" id="amount">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Fname">First Name</label>
+                    <input type="text" class="form-control" id="Fname" name="Fname">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Lname">Last Name</label>
+                    <input type="text" class="form-control" id="Lname" name="Lname">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Phone">Phone Number</label>
+                    <input type="tel" class="form-control" id="Phone" name="Phone">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Email">Email</label>
+                    <input type="email" class="form-control" id="Email" name="Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Address1">Address Line 1</label>
+                <input type="text" class="form-control" id="Address1" name="Address1" placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+                <label for="Address2">Address Line 2</label>
+                <input type="text" class="form-control" id="Address2" name="Address2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="City">City</label>
+                    <input type="text" class="form-control" id="City" name="City">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="State">State</label>
+                    <input type="text" class="form-control" id="State" name="State">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="Zip_Code">Zip</label>
+                    <input type="text" class="form-control" id="Zip_Code" name="Zip_Code">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+}
+console.log(cart);
+var sum = 0;
+var total_amt = 0;
+if ($.isEmptyObject(cart)) {
+    //if object is empty
+    mystr = `<p>Your cart is empty, please add some items to your cart before checking out!</p>`
+    $('#items').append(mystr);
+} else {
+    for (item in cart) {
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        let price = cart[item][2];
+        let amt = price*qty;
+        total_amt = total_amt + amt;
+        sum = sum + qty;
+        mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>${name}</span>
+                    <span >Mrp ${price} X ${qty} No.</span>
+                    <span ><b>${amt}</b></span>
+                    
+                </li>`
+        $('#items').append(mystr);
+    }
+    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span></span>
+                    <span >  Total (In Rs.)</span>
+                    <span ><b>${total_amt}</b></span>
+                    
+                </li>`
+        $('#total_amt').append(mystr);
+}
+document.getElementById('cart').innerHTML = sum;
+
+$('#Item_Json').val(JSON.stringify(cart));
+$('#amount').val(total_amt);
+{% if thank %}
+alert("Thank You for Shopping with us,You can track your order with Order Id {{id}}")
+localStorage.clear()
+document.location = "/shop";
+{% endif %}
+
+</script>
+
+{% endblock %}

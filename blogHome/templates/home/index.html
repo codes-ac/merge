@@ -1,0 +1,79 @@
+{% extends 'basic.html' %}
+
+{% block title %} Blog {% endblock  %}
+
+{% block homeactive %} active {% endblock homeactive %}
+{% block homeactive1 %} active {% endblock homeactive1 %}
+
+{% block css %}
+<style>
+
+  #home-content{
+    margin-left: 12rem;  
+  }
+
+  @media only screen and (max-width: 600px) {
+    #home-content{
+      margin-left: auto;
+    }
+  }
+
+</style>
+{% endblock css %}
+
+
+{% block body %}
+
+<div class="container my-1">
+ 
+  <div class="jumbotron p-2 p-md-2 text-white rounded bg-dark">
+    <div class="col-md-6 px-1">
+      <h1 class="display-4 font-italic">Welcome To Codes_AC Blogs</h1>
+      <p class="lead my-3">Here you will find interesting things....</p>
+      <p class="lead mb-0"><a href="/bloghome/blog" class="text-white font-weight-bold">Go To Blog</a></p>
+    </div>
+  </div>
+</div> 
+
+<div class="container mb-4" style="text-align:center;">
+   <h2>Popular Blog Posts</h2>
+</div>
+
+<div class="container"  >
+  {% for post in posts %}
+   <div class="row mb-2" id="home-content">
+    <div class="col-md-9 rounded">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <p><strong class="d-inline-block mb-2 text-primary">By {{post.author}}</strong> ({{post.views}} views)</p>
+          <h3 class="mb-0">{{post.title}}</h3>
+          <div class="mb-1 text-muted">{{post.pub_date}}</div>
+          <p class="card-text mb-auto"><div class="preview" style="text-align:justify;">{{post.content| truncatechars:150|safe}}</div></p>
+          <a href="/bloghome/blog/{{post.slug}}" role="button" class="btn btn-secondary">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+          <img src='{{post.image.url}}' style="width:300px;" alt="thumbnail" class=" mt-5 mb-5"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  {% endfor %}
+</div>
+
+{% endblock body %}
+
+
+{% block js %}
+<script>
+
+
+  previews = document.getElementsByClassName("preview");
+  Array.from(previews).forEach((element)=>{
+    element.innerHTML = element.innerText;
+  })
+  
+</script>
+{% endblock js %}

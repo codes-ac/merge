@@ -1,0 +1,60 @@
+{% extends 'basic.html' %}
+
+{% block title %} Blog Home {% endblock  %}
+
+{% block blogactive %} active {% endblock blogactive %}
+{% block blogactive1 %} active {% endblock blogactive1 %}
+
+
+{% block css %}
+<style>
+
+  .preview{
+    text-align: justify;
+  }
+
+
+</style>
+{% endblock css %}
+
+{% block body %}
+
+
+<div class="container">
+  <h2 class="mt-2 mb-2"><strong>Codes_AC Articles</strong></h2>
+</div>
+
+{% for post in posts %}
+
+<div class="container flex-column">
+    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+      <div class="col p-4 d-flex flex-column position-static">
+        <p class="d-inline-block mb-2 text-primary">By <strong>{{post.author}}</strong> ({{post.views}} views)</p>
+        <h3 class="mb-0">{{post.title}}</h3>
+        <div class=" mb-1 text-muted">{{post.pub_date}}</div>
+        <p class="card-text mb-auto"><div class="preview">{{post.content| truncatechars:500|safe}}</div></p>
+        <div class="my-2">
+        <a href="/bloghome/blog/{{post.slug}}" role="button" class="btn btn-secondary">Continue reading</a>
+      </div>
+      </div>
+      <div class="col-md-4 col-sm-12 d-none d-lg-block">
+        <img src="{{post.image.url}}" alt="thumbnail" style="height:auto; width:20rem; margin-top: 5rem; margin-bottom: 5rem;">
+      </div>
+    </div>
+</div>
+
+{% endfor %}
+
+{% block js %}
+<script>
+
+  previews = document.getElementsByClassName("preview");
+  Array.from(previews).forEach((element) => {
+    element.innerHTML = element.innerText;
+  })
+
+</script>
+{% endblock js %}
+
+
+{% endblock body %}

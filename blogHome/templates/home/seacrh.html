@@ -1,0 +1,64 @@
+{% extends 'basic.html' %}
+
+{% block title %} Search Result {% endblock  %}
+
+{% block blogactive %} active {% endblock blogactive %}
+
+{% block js %}
+<script>
+
+  previews = document.getElementsByClassName("preview");
+  Array.from(previews).forEach((element)=>{
+    element.innerHTML = element.innerText;
+  })
+  
+</script>
+{% endblock js %}
+
+{% block body %}
+
+
+  {% if post|length < 1 %}
+<div class="container">
+  <h2 class="mt-3 mb-3"><strong> Search results.... </strong></h2>
+       
+ <p>No search results</p>
+ Your search query: <b>{{query|truncatechars:30}}</b> did not match any documents <br>
+ Suggestions:
+ <ol class="ml-20">
+ <li>Try different keywords</li> 
+ </ol>
+
+  {% else %}
+
+<div class="container">
+  <h2 class="mt-3 mb-3"><strong> Search results for <b>{{query|truncatechars:30}}</b>  </strong></h2>
+  {% endif %}
+  <div class="">
+   {% for post in post %}
+    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+      <div class="col p-4 d-flex flex-column position-static">
+        <p><strong class="d-inline-block mb-2 text-primary">By {{post.author}}</strong> ({{post.views}} views)</p>
+        <h3 class="mb-0">{{post.title}}</h3>
+        <div class="mb-1 text-muted">{{post.pub_date}}</div>
+        <p class="card-text mb-auto"><div class="preview">{{post.content| truncatechars:400|safe}}</div></p>
+         <div class="my-2">
+            <a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a>
+            </div>
+      </div>
+      <div class="col-auto d-none d-lg-block">
+        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+        <img src="{{post.image.url}}" alt="thumbnail" style="height:auto; width:20rem; align-items: center; margin-top: 5rem; margin-bottom: 5rem;">
+        </svg>
+      </div>
+    </div>
+    {% endfor %}
+
+
+
+  </div>
+
+</div>
+
+{% endblock body %}
